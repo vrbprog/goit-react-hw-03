@@ -1,5 +1,6 @@
 import { useState } from "react";
 import s from "./ContactForm.module.css";
+import { Field, Form, Formik } from "formik";
 
 const INITIAL_STATE = {
     name: "",
@@ -7,52 +8,30 @@ const INITIAL_STATE = {
 };
 
 const ControlledForm = ({ adder }) => {
-    const [formData, setFormData] = useState(INITIAL_STATE);
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        adder(formData);
-        setFormData(INITIAL_STATE); //🔥
-    };
-
-    const handleChangeInput = (e) => {
-        const { name, value, type } = e.target;
-
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+    const handleSubmit = (value, actions) => {
+        adder(value);
+        actions.resetForm();
     };
 
     return (
         <div className={s.formWrapper}>
-            <form onSubmit={handleSubmit} className={s.form}>
-                <label className={s.label}>
-                    <span>Name:</span>
-                    <input
-                        className={s.input}
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChangeInput}
-                    />
-                </label>
+            <Formik onSubmit={handleSubmit} initialValues={INITIAL_STATE}>
+                <Form className={s.form}>
+                    <label className={s.label}>
+                        <span>Name:</span>
+                        <Field className={s.input} type="text" name="name" />
+                    </label>
 
-                <label className={s.label}>
-                    <span>Number:</span>
-                    <input
-                        className={s.input}
-                        type="text"
-                        name="number"
-                        value={formData.number}
-                        onChange={handleChangeInput}
-                    />
-                </label>
+                    <label className={s.label}>
+                        <span>Number:</span>
+                        <Field className={s.input} type="text" name="number" />
+                    </label>
 
-                <button className={s.button} type="submit">
-                    Add Contact
-                </button>
-            </form>
+                    <button className={s.button} type="submit">
+                        Add Contact
+                    </button>
+                </Form>
+            </Formik>
         </div>
     );
 };
