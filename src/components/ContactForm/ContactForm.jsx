@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import s from "./ContactForm.module.css";
 import { Field, Form, Formik } from "formik";
 
@@ -7,7 +7,7 @@ const INITIAL_STATE = {
     number: "",
 };
 
-const ControlledForm = ({ adder }) => {
+const ContactForm = ({ adder }) => {
     const handleSubmit = (value, actions) => {
         adder(value);
         actions.resetForm();
@@ -35,4 +35,4 @@ const ControlledForm = ({ adder }) => {
         </div>
     );
 };
-export default ControlledForm;
+export default ContactForm;

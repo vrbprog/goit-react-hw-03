@@ -1,8 +1,9 @@
-import ControlledForm from "./ContactForm/ContactForm";
+import ContactForm from "./ContactForm/ContactForm";
 import ContactList from "./ContactList/ContactList";
 import { useState } from "react";
 import initContactsList from "./../assets/contacts.json";
 import { v4 as uuidv4 } from "uuid";
+import SearchBox from "./SearchBox/SearchBox";
 
 export default function App() {
     const [contactsList, setContactsList] = useState(initContactsList);
@@ -22,7 +23,8 @@ export default function App() {
 
     return (
         <main>
-            <ControlledForm adder={AdderContact} />
+            <ContactForm adder={AdderContact} />
+            <SearchBox />
             <ContactList contacts={contactsList} remover={deleteContact} />
         </main>
     );
