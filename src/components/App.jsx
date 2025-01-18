@@ -6,12 +6,26 @@ import { v4 as uuidv4 } from "uuid";
 import SearchBox from "./SearchBox/SearchBox";
 
 export default function App() {
-    const [contactsList, setContactsList] = useState(initContactsList);
-    const [filteredContactsList, setFilteredContactsList] = useState(contactsList);
-    const [filterMaska, setFilterMaska] = useState('');
+    const [contactsList, setContactsList] = useState(
+        JSON.parse(window.localStorage.getItem("saved-contactsList")) ||
+            initContactsList
+    );
 
     useEffect(() => {
-        const filtered = contactsList.filter(contact => contact.name.toLowerCase().startsWith(filterMaska.toLowerCase()));
+        window.localStorage.setItem(
+            "saved-contactsList",
+            JSON.stringify(contactsList)
+        );
+    }, [contactsList]);
+
+    const [filteredContactsList, setFilteredContactsList] =
+        useState(contactsList);
+    const [filterMaska, setFilterMaska] = useState("");
+
+    useEffect(() => {
+        const filtered = contactsList.filter((contact) =>
+            contact.name.toLowerCase().startsWith(filterMaska.toLowerCase())
+        );
         setFilteredContactsList(filtered);
     }, [contactsList, filterMaska]);
 
@@ -36,7 +50,10 @@ export default function App() {
         <main>
             <ContactForm adder={AdderContact} />
             <SearchBox filter={Filter} />
-            <ContactList contacts={filteredContactsList} remover={deleteContact} />
+            <ContactList
+                contacts={filteredContactsList}
+                remover={deleteContact}
+            />
         </main>
     );
 }
